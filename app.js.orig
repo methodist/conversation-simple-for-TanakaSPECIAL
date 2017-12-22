@@ -67,22 +67,10 @@ app.post('/api/message', function(req, res) {
  * @return {Object}          The response with the updated message
  */
 function updateMessage(input, response) {
-  var buttonList;
-  if (response.context.answer_type === "candidate_list") {
-  	  buttonList = "<div>";
-	  response.context.candidate_list.forEach(function(value, i) {
-		  buttonList += "<button type='button' onclick='ConversationPanel.clickButton(" + value + ")'>" + value + "</button>";
-	  });
-	  buttonList += "</div>";
-  }
-
   var responseText = null;
   if (!response.output) {
     response.output = {};
   } else {
-	 if (buttonList) {
-    	response.output.text = response.output.text + "<br><br>" + buttonList;
-	 }
     return response;
   }
   if (response.intents && response.intents[0]) {

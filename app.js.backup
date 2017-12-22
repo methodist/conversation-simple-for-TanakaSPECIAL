@@ -71,6 +71,7 @@ function updateMessage(input, response) {
   if (response.context.answer_type === "candidate_list") {
   	  buttonList = "<div>";
 	  response.context.candidate_list.forEach(function(value, i) {
+		  //buttonList += "<button type='button' onclick='ConversationPanel.clickButton(\"" + value + "\")'>" + value + "</button>";
 		  buttonList += "<button type='button' onclick='ConversationPanel.clickButton(" + value + ")'>" + value + "</button>";
 	  });
 	  buttonList += "</div>";

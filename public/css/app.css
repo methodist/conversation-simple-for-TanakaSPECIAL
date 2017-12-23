@@ -451,26 +451,24 @@ button.intents {
     padding: 10px 10px;
 
     /* 背景色指定 */
-    background-color: #49a9d4;
+    background-color: #ffffff;
 
     /* 文字色を白色に指定 */
-    color: #fff;
+    color: #000000;
 
     /* ボーダー */
-	 /* border: thick; */
-	 boarder-style: solid; 
-	 boarder-color: #ffffff; 
+	 border: 2px solid #00B4A0; 
 
     /* 角丸の指定 */
-    /* -moz-border-radius: 10px; */
-    /* -webkit-border-radius: 10px; */
     border-radius: 20px;
+
+	 margin: 5px 5px 0px 0px; /* 上下左右*/
 }
 
 button.intents:hover {
     /* 背景色を明るい青色に指定 */
-    background-color: #24d;
+    background-color: #dcf2ef;
 
     /* 文字色を白色に指定 */
-    color: #fff;
+    color: #00B4A0;
 }

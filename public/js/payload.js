@@ -37,9 +37,12 @@ var PayloadPanel = (function() {
     if (element.classList.contains('full')) {
       element.classList.remove('full');
       payloadColumn.classList.remove('full');
-    } else {
-      element.classList.add('full');
-      payloadColumn.classList.add('full');
+	 } else if (element.classList.contains('none')) {
+      element.classList.replace('none', 'full');
+      payloadColumn.classList.replace('none', 'full');
+	 } else {
+      element.classList.add('none');
+      payloadColumn.classList.add('none');
     }
   }
 

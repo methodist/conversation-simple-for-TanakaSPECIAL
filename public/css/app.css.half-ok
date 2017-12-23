@@ -261,16 +261,11 @@ input:-moz-placeholder {
 }
 
 #payload-column.full {
-  width: 0%;
-  max-width: none;
-  min-width: initial;
-
-}
-
-#payload-column.none {
   width: 100%;
   max-width: none;
   min-width: initial;
+  /* visibility: hidden; */ /* これを有効にするとchat画面も消える */
+  display: none; /* noneだとchat画面は残る */
 }
 
 #payload-column .header-text, #payload-column #payload-initial-message {

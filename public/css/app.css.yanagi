@@ -41,7 +41,6 @@ div {
 
 #view-change-button.full .full {
   display: inline-block; 
-  /* visibility: hidden; */
 }
 
 #contentParent {
@@ -261,13 +260,6 @@ input:-moz-placeholder {
 }
 
 #payload-column.full {
-  width: 0%;
-  max-width: none;
-  min-width: initial;
-
-}
-
-#payload-column.none {
   width: 100%;
   max-width: none;
   min-width: initial;

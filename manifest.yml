@@ -1,15 +1,9 @@
 ---
-declared-services:
-  my-conversation-service:
-    label: conversation
-    plan: free
 applications:
-- name: conversation-simple
+- name: conversation-simple-4-tanakaSPECIAL
   command: npm start
   path: .
   memory: 256M
   instances: 1
-  services:
-  - my-conversation-service
   env:
     NPM_CONFIG_PRODUCTION: false

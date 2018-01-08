@@ -51,14 +51,106 @@ app.post('/api/message', function(req, res) {
     input: req.body.input || {}
   };
 
+  var params = {
+    workspace_id: workspace,
+    page_limit: 1000,
+  };
+
+  var TINTS = process.env.TOP_INTENTS           || "OFF";
+  var TINUM = process.env.TOP_INTENTS_NUM       || undefined;
+  var TIMOD = process.env.TOP_INTENTS_MODE      || "TANAKA3";
+  var TIEXL = process.env.TOP_INTENTS_EXCL      || null;
+  var TILST = process.env.TOP_INTENTS_MODE_LIST || null;
+
+  //CountIntents()の再帰呼び出しのための定義
+  var rData;
+  var intents = {};
+
   // Send the input to the conversation service
   conversation.message(payload, function(err, data) {
-    if (err) {
-      return res.status(err.code || 500).json(err);
-    }
-    return res.json(updateMessage(payload, data));
+    if (err) return res.status(err.code || 500).json(err);
+    if (req.body.input == null && TINTS === "ON") {
+		 if (TIMOD === "TANAKA3" || TIMOD === "OTHER") {
+		 	rData = data;
+       	conversation.getLogs(params, CountIntents);
+		 } else if (TIMOD === "LIST" && TILST) {
+			 return res.json(makeIntentsList(JSON.parse(TILST), JSON.parse(TIEXL), null, data, TINUM));
+		 } else return res.json(updateMessage(payload, data));
+    } else return res.json(updateMessage(payload, data));
   });
+
+  // CountIntents() : Callback func of getLogs()
+  function CountIntents(err, response) {
+    if (err) console.error(err);
+    else {
+       response.logs.forEach(function(conv) {
+          conv.response.intents.forEach(function(intent) {
+             //集計処理 -> 連想配列として生成する
+             if (intents[intent.intent] == undefined)
+                intents[intent.intent] = 1;
+             else
+                intents[intent.intent] += 1;
+          });
+       });
+       var url = response.pagination.next_url;
+		 if (url) {
+		 	 var Pcursor='cursor=';
+          var pos1 = url.indexOf('cursor=');
+          if (pos1 !== -1) {
+		 		 var pos2 = url.indexOf('&', pos1+Pcursor.length);
+		 		 params.cursor = url.substr(pos1+Pcursor.length, pos2-pos1-Pcursor.length);
+             conversation.getLogs(params, CountIntents); // 再帰処理
+          }
+       } else {
+          var topIntents = [];
+          //連想配列から配列に変換
+          for(var key in intents) {
+             var tmp = { "intent":key, "match":intents[key] };
+             topIntents.push(tmp);
+          }
+          //降順ソート
+          topIntents.sort(function(a, b) {
+             if (a.match > b.match) return -1;
+             if (a.match < b.match) return 1;
+             return 0;
+          });
+			 //intentsリストを作成する
+          var intentsList = [];
+          for(var key in topIntents) 
+             intentsList.push(topIntents[key].intent);
+
+		 	 if (TIMOD === "TANAKA3") var reg = /^[SDE]_(.*)/; //田中さんのintent構造化ルールに一致する
+			 else var reg = null;
+
+		 	 return res.json(makeIntentsList(intentsList, JSON.parse(TIEXL), reg, rData, TINUM));
+       }
+    }
+  };
 });
+
+function makeIntentsList(list, elist, regExp, data, number) {
+	if (regExp === null) regExp = /(.*)/;
+	var j = 0;
+	var buttonList = "<div>";
+	list.forEach(function(value, i) {
+		if (value = value.match(regExp)) {
+			//console.log("value[0]: ", value[0]);
+			//console.log("value[1]: ", value[1]);
+			if (elist === null || elist.indexOf(value[0]) == -1 )
+         	//指定した数分を抽出して、intentsのリストを作成する
+				if ( number == undefined || j < number) {
+					buttonList += "<button type='button' class='intents' onclick='ConversationPanel.clickButton(\"" + value[1] + "\")'>" + value[1] + "</button><br>";
+					j++;
+				}
+			}
+	});
+	buttonList += "</div>";
+	
+	data.output.text = data.output.text[0];
+	data.output.text += "<br><br>-- よく利用されている質問はこちら--<br>";
+	data.output.text += buttonList;
+	return data;
+}
 
 /**
  * Updates the response text using the intent confidence

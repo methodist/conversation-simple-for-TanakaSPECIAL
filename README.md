@@ -1,5 +1,20 @@
 # Conversation Sample Application [![Build Status](https://travis-ci.org/watson-developer-cloud/conversation-simple.svg?branch=master)](http://travis-ci.org/watson-developer-cloud/conversation-simple) [![codecov.io](https://codecov.io/github/watson-developer-cloud/conversation-simple/coverage.svg?branch=master)](https://codecov.io/github/watson-developer-cloud/conversation-simple?branch=master)
 
+## 以前のバージョンからの変更点
+1. Payload全画面表示の廃止
+2. Conversation開始時に、よく使われるIntents/あらかじめ用意したIntentsの表示
+
+#### 上記 2 については、.envにて指定します。
+
+* TOP_INTENTS=ON (default値はOFF)とすることで、利用頻度が高いIntentsが表示されます。
+* TOP_INTENTS_MODE=TANAKA3 (default値です)とすることで、田中さんスペシャルのIntents構造を理解します。
+  - 但し、田中さんスペシャル以外では、TOP_INTENTS_MODE=OTHERもしくはLISTを指定してください。
+  - TOP_INTENTS_MODE=LISTを指定した場合は、TOP_INTENTS_MODE_LISTに指定したIntentsリスト(配列で指定)が表示されます。
+* TOP_INTENTS_NUM=n (nは数字)とすることで、表示するIntents数を指定できます。
+* TOP_INTENTS_EXCLに除外したいIntentsを配列で指定できます。
+
+## 以上
+
 This Node.js app demonstrates the Conversation service in a simple chat interface simulating a cognitive car dashboard.
 
 ![Demo](readme_images/demo.gif)

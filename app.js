@@ -147,7 +147,7 @@ function makeIntentsList(list, elist, regExp, data, number) {
 	buttonList += "</div>";
 	
 	data.output.text = data.output.text[0];
-	data.output.text += "<br><br>-- よく利用されている質問はこちら--<br>";
+	data.output.text += "<br><br>よくある問合わせについては以下からボタンで選択することもできます。<br>";
 	data.output.text += buttonList;
 	return data;
 }

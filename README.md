@@ -7,7 +7,7 @@
 #### 上記 2 については、.envにて指定します。
 
 * TOP_INTENTS=ON (default値はOFF)とすることで、利用頻度が高いIntentsが表示されます。
-* TOP_INTENTS_MODE=TANAKA3 (default値です)とすることで、田中さんスペシャルのIntents構造を理解します。
+* TOP_INTENTS_MODE=TANAKA3 (default値です)とすることで、田中さんスペシャルのIntents名前ルールを理解します。
   - 但し、田中さんスペシャル以外では、TOP_INTENTS_MODE=OTHERもしくはLISTを指定してください。
   - TOP_INTENTS_MODE=LISTを指定した場合は、TOP_INTENTS_MODE_LISTに指定したIntentsリスト(配列で指定)が表示されます。
 * TOP_INTENTS_NUM=n (nは数字)とすることで、表示するIntents数を指定できます。

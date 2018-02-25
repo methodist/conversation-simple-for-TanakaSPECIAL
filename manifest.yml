@@ -5,7 +5,5 @@ applications:
   path: .
   memory: 64M
   instances: 1
-  services:
-  - your-conversation-service
   env:
     NPM_CONFIG_PRODUCTION: false

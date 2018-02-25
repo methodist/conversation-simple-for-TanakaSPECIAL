@@ -3,7 +3,9 @@ applications:
 - name: conversation-simple-4-tanakaSPECIAL
   command: npm start
   path: .
-  memory: 256M
+  memory: 64M
   instances: 1
+  services:
+  - my-conversation-service
   env:
     NPM_CONFIG_PRODUCTION: false
